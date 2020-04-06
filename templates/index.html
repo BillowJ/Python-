@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% extends "__base__.html" %}
+{% block title %} {% endblock %}
+
+
+{% block nav %}
+<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="/adduser" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Add</a>
+                        <ol class="breadcrumb">
+                            <li><a >Manage</a></li>
+                            <li class="active">User</li>
+                        </ol>
+                </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title">用户管理</h3>
+{#            <p class="text-muted">Add class <code>.table</code></p>#}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User Id</th>
+                            <th>User Name</th>
+                            <th>User Password</th>
+                            <th>Create At</th>
+                            <th>Role</th>
+                            <th>Modify</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in userlist %}
+                            <tr>
+                                <td> {{ user.user_id }}</td>
+                                <td> {{ user.user_name }}</td>
+                                <td> {{ user.passwd }}</td>
+                                <td> {{ user.create_at }}</td>
+                                <td> {% if user.admin %}
+                                    Admin
+                                    {% else %}
+                                    User
+                                {% endif %}</td>
+                                <td>
+                                    <button class="btn  btn-danger" onclick="location.href='/modifyuser?user_id={{ user.user_id }}&user={{ user.user_name }}'">修改</button>
+
+                                    {% ifequal user.admin  0%}
+                                        <button class="btn btn-googleplus" onclick="deleteBtn('/delete_user?user_name={{ user.user_name }}')">删除</button></td>
+                                    {% endifequal %}
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li><a href="?page=1">首页</a></li>
+                                                    {% if page.has_previous %}
+                                                        <li><a href="?page={{ page.previous_page_number }}"></a></li>
+                                                    {% else %}
+                                                        <li class="disabled"><a href="javascript:void(0);"></a></li>
+                                                    {% endif %}
+                                                    {% for num in paginator.page_range %}
+                                                        {% if current_page == num %}
+                                                            <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if page.has_next %}
+                                                        <li><a href="?page={{ page.next_page_number }}"></a></li>
+                                                    {% else %}
+                                                        <li class="disabled"><a href="javascript:void(0);"></a></li>
+                                                    {% endif %}
+                                                    <li><a href="?page={{ paginator.num_pages }}">尾页</a></li>
+                                                </ul>
+                                            </nav>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="../static/js/MyUtils.js"></script>
+{% endblock %}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% extends "__base__.html" %}
+{% block title %} {% endblock %}
+
+{{ user }}
+
+{% block nav %}
+<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="/addblog" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Add</a>
+                        <ol class="breadcrumb">
+                            <li><a >Manage</a></li>
+                            <li class="active">Blog</li>
+                        </ol>
+                </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+       <div class="col-md-12 col-lg-12 col-sm-12">
+           <div class="white-box col-md-12 col-lg-12 col-sm-12">
+               <h3 class="box-title">文章管理</h3>
+               <div class="comment-center">
+                   {% for blog in blogs %}
+                    <a href="/modifyblog?blog_id={{ blog.blog_id }}&title={{ blog.title }}&summary={{ blog.summary }}&content={{ blog.content }}">
+                   <div class="comment-body col-md-12 col-lg-12">
+                       <div class="mail-contnet">
+                           <h5>{{ blog.title }} </h5> <span class="mail-desc">{{ blog.summary }}</span> <span class="mail-desc">content : {{ blog.content }} </span><a href="/index" class="action"><i class="ti-close text-danger"></i></a> <a href="/index" class="action"><i class="ti-check text-success"></i></a>
+                           <span class="time pull-right">{{ blog.created_at }}</span>
+                       </div>
+
+                   </div>
+                                        <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li><a href="?page=1">首页</a></li>
+                                                    {% if page.has_previous %}
+                                                        <li><a href="?page={{ page.previous_page_number }}"></a></li>
+                                                    {% else %}
+                                                        <li class="disabled"><a href="javascript:void(0);"></a></li>
+                                                    {% endif %}
+                                                    {% for num in paginator.page_range %}
+                                                        {% if current_page == num %}
+                                                            <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if page.has_next %}
+                                                        <li><a href="?page={{ page.next_page_number }}"></a></li>
+                                                    {% else %}
+                                                        <li class="disabled"><a href="javascript:void(0);"></a></li>
+                                                    {% endif %}
+                                                    <li><a href="?page={{ paginator.num_pages }}">尾页</a></li>
+                                                </ul>
+                                            </nav>
+                    </a>
+                   {% endfor %}
+
+               </div>
+
+           </div>
+       </div>
+</div>
+{% endblock %}

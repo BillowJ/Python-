@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% extends "__base__.html" %}
+{{ user }}
+{% block nav %}
+<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="/addcomment" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Add</a>
+                        <ol class="breadcrumb">
+                            <li><a >Manage</a></li>
+                            <li class="active">Comments</li>
+                        </ol>
+ </div>
+{% endblock %}
+{% block title %} {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title">评论管理</h3>
+{#            <p class="text-muted">Add class <code>.table</code></p>#}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Comment ID</th>
+                            <th>Content</th>
+                            <th>Blog ID</th>
+                            <th>User ID</th>
+                            <th>Create At</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in commentlist %}
+                            <tr>
+                                <td> {{ comment.com_id }}</td>
+                                <td> {{ comment.content }}</td>
+                                <td> {{ comment.blog_id }}</td>
+                                <td> {{ comment.owner_id }}</td>
+                                <td>{{ comment.create_at }}</td>
+                                <td>
+                                    <button class="btn  btn-danger" onclick="location.href='/modifycomment?com_id={{ comment.com_id }}'">修改</button>
+                                    <button class="btn btn-googleplus" onclick="deleteBtn('/delete_comment?com_id={{ comment.com_id }}')">删除</button></td>
+
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li><a href="?page=1">首页</a></li>
+                                                    {% if page.has_previous %}
+                                                        <li><a href="?page={{ page.previous_page_number }}"></a></li>
+                                                    {% else %}
+                                                        <li class="disabled"><a href="javascript:void(0);"></a></li>
+                                                    {% endif %}
+                                                    {% for num in paginator.page_range %}
+                                                        {% if current_page == num %}
+                                                            <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if page.has_next %}
+                                                        <li><a href="?page={{ page.next_page_number }}"></a></li>
+                                                    {% else %}
+                                                        <li class="disabled"><a href="javascript:void(0);"></a></li>
+                                                    {% endif %}
+                                                    <li><a href="?page={{ paginator.num_pages }}">尾页</a></li>
+                                                </ul>
+                                            </nav>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="../static/js/MyUtils.js"></script>
+    <script type="text/javascript">
+    function addBtn(url) {
+    $.confirm({
+        title: '提示',
+        content: '是否添加?',
+        buttons: {
+            ok: {
+                text: '确认',
+                btnClass: 'btn-danger',
+                action: function() {
+                    location.href = url; //指向下载资源（此处为目标文件的输出数据流）
+                }
+            },
+            cancel: {
+                text: '取消',
+                btnClass: 'btn-primary'
+            }
+        }
+    });
+}
+</script>
+{% endblock %}

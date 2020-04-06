@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% extends "__base__.html" %}
+{{ user }}
+{% block nav %}
+<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> <a href="/addcomment" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Add</a>
+                        <ol class="breadcrumb">
+                            <li><a >Manage</a></li>
+                            <li class="active">Comments</li>
+                        </ol>
+ </div>
+{% endblock %}
+
+{% block title %} {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title">查询结果：</h3>
+{#            <p class="text-muted">Add class <code>.table</code></p>#}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Blog ID</th>
+                            <th>Blog Title</th>
+                            <th>Blog Summary</th>
+                            <th>Create At</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for blog in bloglist %}
+                            <tr>
+                                <td> {{ user }}</td>
+                                <td> {{ blog.blog_id }}</td>
+                                <td> {{ blog.title }}</td>
+                                <td> {{ blog.summary }}</td>
+                                <td>{{ blog.created_at }}</td>
+
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="../static/js/MyUtils.js"></script>
+    <script type="text/javascript">
+    function addBtn(url) {
+    $.confirm({
+        title: '提示',
+        content: '是否添加?',
+        buttons: {
+            ok: {
+                text: '确认',
+                btnClass: 'btn-danger',
+                action: function() {
+                    location.href = url; //指向下载资源（此处为目标文件的输出数据流）
+                }
+            },
+            cancel: {
+                text: '取消',
+                btnClass: 'btn-primary'
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
